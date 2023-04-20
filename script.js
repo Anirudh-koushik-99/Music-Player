@@ -13,7 +13,7 @@ const cover = document.querySelector('#cover')
 const songs  = ['audio1', 'audio2', 'audio3', 'audio4', 'audio5'];
 
 //keep track of song
-let songIndex = 2;
+let songIndex = 4;
 
 //Initially load song
 loadSong(songs[songIndex])
@@ -22,7 +22,55 @@ loadSong(songs[songIndex])
 function loadSong(song){
     title.innerText = song
     audio.src = `music/${song}.mp4`
-    cover.src = `background/${song}.jpeg`
+    cover.src = `background/${song}.jpg`
 }
 
+function playSong(){
+    musicContainer.classList.add('play')
+    playBtn.querySelector('i.fas').classList.remove('fa-play')
+    playBtn.querySelector('i.fas').classList.add('fa-pause')
+
+    audio.play();
+}
+
+function pauseSong(){
+    musicContainer.classList.remove('play')
+    playBtn.querySelector('i.fas').classList.remove('fa-pause')
+    playBtn.querySelector('i.fas').classList.add('fa-play')
+
+    audio.pause();
+}
+
+function prevSong(){
+    songIndex = songIndex - 1;
+    if(songIndex < 0){
+        songIndex = songs.length - 1;
+    }
+    loadSong(songs[songIndex])
+    playSong();
+}
+
+function nextSong(){
+    songIndex = songIndex + 1;
+    if(songIndex > songs.length-1){
+        songIndex = 0;
+    }
+    loadSong(songs[songIndex])
+    playSong();
+}
+
+//Event Listeners
+playBtn.addEventListener('click',() => {
+    const isPlaying = musicContainer.classList.contains('play')
+
+    if(isPlaying){
+        pauseSong()
+    }else{
+        playSong()
+    }
+})
+
+//change song events
+prevBtn.addEventListener('click', prevSong)
+nextBtn.addEventListener('click', nextSong)
 
